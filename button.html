@@ -45,7 +45,7 @@ title: Your button
             $('._address').html(address);
             address = address.replace('bitcoincash:', '');
             let port = location.port;
-            if (port !== 80 && port !== 443) {
+            if (port > 0 && port !== 80 && port !== 443) {
                 port = ':' + port;
             } else {
                 port = '';
