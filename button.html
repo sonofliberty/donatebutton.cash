@@ -44,7 +44,7 @@ title: Your button
             address = bchaddr.toCashAddress(address);
             $('._address').html(address);
             address = address.replace('bitcoincash:', '');
-            let iframeHtml = "<iframe src='" + window.location.protocol + "//" + window.location.hostname + ([80, 443].indexOf(location.port) === -1 ? (':' + location.port) : '') + "/e?a=" + address + "' width='150' height='150' style='border:none'></iframe>";
+            let iframeHtml = "<iframe src='" + window.location.protocol + "//" + window.location.hostname + (([80, 443].indexOf(location.port) === -1 ? (':' + location.port) : '')) + "/e?a=" + address + "' width='150' height='150' style='border:none'></iframe>";
             textarea.val(iframeHtml);
             frame.html(iframeHtml);
         }
