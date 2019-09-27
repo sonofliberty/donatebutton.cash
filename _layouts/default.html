@@ -6,6 +6,7 @@
   <body>
 
     {%- include header.html -%}
+    {% if site.github_url %}{% include github-corner.html %}{% endif %}
 
     <div class="py-5">
       <div class="container page-content">
