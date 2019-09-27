@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="/assets/main.css">
+
+<div id="donatebutton.cash" class="h-100" style="position: relative; min-height: 150px">
+    <div class="h-100 justify-content-center align-items-center">
+        <button class="btn btn-primary btn-lg btn-block" onclick="$(this).slideUp(); buttonQr.slideDown();" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
+            Donate BCH
+        </button>
+        <div id="button_qr" class="h-100" style="position: relative">
+            <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
+                <span>
+                    <img id="button_qr_icon" src="assets/images/BCH.png" alt="Donate Bitcoin Cash" style="width: 30px; height: auto">
+                    <span id="button_qr_thank_you" class="badge badge-success">Payment received.<br>Thank you!</span>
+                </span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/javascript/bootstrap/jquery.min.js"></script>
+<script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js"></script>
+<script>
+
+    let buttonQr = $('#button_qr');
+    let buttonQrImage = buttonQr.find('#button_qr_image');
+    let buttonQrIcon = buttonQr.find('#button_qr_icon');
+    let buttonQrThankYou = buttonQr.find('#button_qr_thank_you');
+
+    buttonQrThankYou.hide();
+    buttonQr.hide();
+    buttonQr.css('background-image', 'url(https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + new URLSearchParams(window.location.search).get('a') + ')');
+
+    let query = {v:3,q:{find:{"out.e.a":new URLSearchParams(window.location.search).get('a')}}};
+    let sse = new EventSource("https://bitsocket.bitcoin.com/s/" + btoa(JSON.stringify(query)));
+    sse.onmessage = (event) => {
+        let data = JSON.parse(event.data);
+        if (data.type === "mempool") {
+            buttonQrIcon.hide();
+            buttonQrThankYou.show();
+            setTimeout(() => {
+                buttonQrIcon.show();
+                buttonQrThankYou.hide();
+            }, 10000);
+        }
+    }
+
+</script>

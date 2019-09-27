@@ -1,0 +1,58 @@
+---
+layout: page
+title: Your button
+---
+
+<div id="alert_invalid_address" class="d-none">
+    <div class="alert alert-danger">Please provide a valid BCH address.</div>
+    {% include button_form.html %}
+</div>
+
+<section id="section_button" class="my-5">
+    <h2 class="h6 mb-4">
+        <span class="_address">{address}</span>
+        <small>(<a href="https://www.bitcoincash.org/spec/cashaddr.html" target="_blank">cash address</a>)</small>
+    </h2>
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div id="frame" style="height: 150px; width: 150px">Loading</div>
+        </div>
+        <div class="col-lg-7">
+            <label for="textarea">Include the following line in your HTML:</label>
+            <textarea id="textarea" rows="4" class="form-control"></textarea>
+        </div>
+    </div>
+</section>
+
+<script src="{{ "/assets/javascript/bchaddrjs-0.4.4.min.js" | relative_url }}"></script>
+<script>
+
+    let alertInvalidAddressShow = true;
+    let alertInvalidAddress = $('#alert_invalid_address');
+
+    let sectionButton = $('#section_button');
+    let frame = $('#frame');
+    let textarea = $('#textarea');
+
+    let params = new URLSearchParams(window.location.search);
+
+    if (params.has('address')) {
+        let address = params.get('address');
+        if (bchaddr.isValidAddress(address)) {
+            // address is a valid bitcoin cash address
+            alertInvalidAddressShow = false;
+            address = bchaddr.toCashAddress(address);
+            $('._address').html(address);
+            address = address.replace('bitcoincash:', '');
+            let iframeHtml = "<iframe src='" + window.location.protocol + "//" + window.location.hostname + ([80, 443].indexOf(location.port) === -1 ? (':' + location.port) : '') + "/e?a=" + address + "' width='150' height='150' style='border:none'></iframe>";
+            textarea.val(iframeHtml);
+            frame.html(iframeHtml);
+        }
+    }
+
+    if (alertInvalidAddressShow) {
+        alertInvalidAddress.removeClass('d-none');
+        sectionButton.hide();
+    }
+
+</script>

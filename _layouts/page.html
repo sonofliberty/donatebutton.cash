@@ -3,9 +3,11 @@ layout: default
 ---
 <article>
 
-  <header>
-    <h1>{{ page.title | escape }}</h1>
-  </header>
+  {% if page.title %}
+    <header>
+      <h1>{{ page.title | escape }}</h1>
+    </header>
+  {% endif %}
 
   <section>
     {{ content }}
