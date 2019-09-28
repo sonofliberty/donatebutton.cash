@@ -4,5 +4,4 @@ rvm:
 sudo: false
 cache: bundler
 exclude: [vendor]
-install: gem install jekyll
 script: jekyll build
