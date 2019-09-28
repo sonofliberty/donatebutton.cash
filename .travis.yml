@@ -1,7 +1,12 @@
 language: ruby
+sudo: false
+cache: bundler
 rvm:
   - 2.6
 before_install:
   - gem update --system
   - gem install bundler
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
 script: bundle exec jekyll build
