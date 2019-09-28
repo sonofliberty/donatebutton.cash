@@ -31,4 +31,5 @@ header_pages:
 
 # Exclude from processing.
 exclude:
+  - .idea
   - vendor

@@ -1,15 +1,16 @@
 <link rel="stylesheet" href="/assets/main.css">
 
-<div id="donatebutton.cash" class="h-100" style="position: relative; min-height: 150px">
+<body style="background: transparent">
+<div id="donatebutton.cash" class="h-100" style="position: relative">
+    <button id="button" class="btn btn-primary btn-block" onclick="startListening(); $(this).slideUp(); buttonQr.slideDown();">
+        <img src="/assets/images/BCH_inverted.svg" class="img-fluid mr-1" alt="Donate Bitcoin Cash" >
+        <strong>Donate</strong>
+    </button>
     <div class="h-100 justify-content-center align-items-center">
-        <button class="btn btn-primary btn-lg btn-block" onclick="$(this).slideUp(); buttonQr.slideDown();" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
-            Donate BCH
-        </button>
         <a href="javascript:" onclick="alert('Address: ' + addr)">
-            <div id="button_qr" class="h-100" style="position: relative">
+            <div id="button_qr" class="h-100" style="position: relative;background-repeat: no-repeat;background-size: cover">
                 <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
                     <span>
-                        <img id="button_qr_icon" src="assets/images/BCH.png" alt="Donate Bitcoin Cash" style="width: 30px; height: auto">
                         <span id="button_qr_thank_you" class="badge badge-success">Payment received.<br>Thank you!</span>
                     </span>
                 </span>
@@ -17,36 +18,47 @@
         </a>
     </div>
 </div>
+</body>
 
 <script src="/assets/javascript/bootstrap/jquery.min.js"></script>
 <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js"></script>
 <script>
 
+    // params
     let addr = new URLSearchParams(window.location.search).get('a');
+    let btnLabel = new URLSearchParams(window.location.search).get('l');
 
+    // elements
     let paymentAddress = $('#payment_address');
+    let button = $('#button');
     let buttonQr = $('#button_qr');
     let buttonQrImage = buttonQr.find('#button_qr_image');
-    let buttonQrIcon = buttonQr.find('#button_qr_icon');
     let buttonQrThankYou = buttonQr.find('#button_qr_thank_you');
 
+    // dom manipulation
     paymentAddress.hide().html(addr);
     buttonQrThankYou.hide();
     buttonQr
         .hide()
-        .css('background-image', 'url(https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + addr + ')');
+        .css({"background-image": 'url(https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + addr + ')'});
+    if (btnLabel) {
+        button.html(btnLabel);
+    }
 
-    let query = {v:3,q:{find:{"out.e.a":addr}}};
-    let sse = new EventSource("https://bitsocket.bitcoin.com/s/" + btoa(JSON.stringify(query)));
-    sse.onmessage = (event) => {
-        let data = JSON.parse(event.data);
-        if (data.type === "mempool") {
-            buttonQrIcon.hide();
-            buttonQrThankYou.show();
-            setTimeout(() => {
-                buttonQrIcon.show();
-                buttonQrThankYou.hide();
-            }, 10000);
+    // listen to incoming transactions
+    function startListening() {
+        let query = {v:3,q:{find:{"out.e.a":addr}}};
+        let sse = new EventSource("https://bitsocket.bitcoin.com/s/" + btoa(JSON.stringify(query)));
+        sse.onmessage = (event) => {
+            let data = JSON.parse(event.data);
+            if (data.type === "mempool") {
+                // tx received
+                buttonQrThankYou.show();
+                setTimeout(() => {
+                    // show thank you text for 10 secs
+                    buttonQrThankYou.hide();
+                }, 10000);
+            }
         }
     }
 
