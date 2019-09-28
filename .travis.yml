@@ -4,4 +4,7 @@ rvm:
 sudo: false
 cache: bundler
 exclude: [vendor]
-script: bundle exec jekyll build
+before_install:
+  - gem update --system --no-document
+  - gem install bundler --no-document
+script: script/cibuild
