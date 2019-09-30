@@ -6,12 +6,12 @@
         <img src="/assets/images/BCH_inverted.svg" class="img-fluid mr-1" alt="Donate Bitcoin Cash" style="height:23px">
         <span id="button_label">Donate</span>
     </button>
-    <div id="button_qr_card" class="card h-100">
+    <div id="button_qr_card" class="card h-100" style="display:none">
         <div class="card-body p-1 text-center justify-content-center align-items-center d-flex">
             <a id="payment_uri" class="w-100" href="//">
                 <img id="button_qr" class="img-fluid" src="//" style="height:112px;width:100%">
             </a>
-            <div id="button_qr_thank_you" class="text-success small font-weight-bold align-self-center">
+            <div id="button_qr_thank_you" class="text-success small font-weight-bold align-self-center" style="display:none">
                 <span id="button_qr_received_amount">Payment</span> received. Thank you!
             </div>
         </div>
@@ -44,9 +44,7 @@
     let buttonQrPaymentUri = $('#payment_uri');
 
     // dom manipulation
-    buttonQrCard.hide();
     buttonQrPaymentUri.attr('href', paymentUri);
-    buttonQrThankYou.hide();
     buttonQr.attr({"src": 'https://api.qrserver.com/v1/create-qr-code/?size=112x112&data=' + paymentUri});
     if (btnLabel) {
         buttonLabel.html(btnLabel);

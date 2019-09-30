@@ -4,6 +4,8 @@
     - More effects and visual feedback on payments, including amount received
   changed:
     - QR code now refers to the payment URI ('bitcoincash:...') which is compatible with desktop wallets
+  fixed:
+    - Elements no longer flashing up before clicking button
 - date: 2019-09-30
   added:
     - Custom labels for donation button
