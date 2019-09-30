@@ -5,8 +5,12 @@ title: Changelog
 
 <ul class="list-unstyled">
     {% for clEntry in site.data.changelog %}
-        <li>
-            <h2>{{ clEntry.date | date: '%B %d, %Y' }}</h2>
+        <li id="{{ clEntry.date }}" class="mb-4">
+            <h2 class="h5">
+                <a href="#{{ clEntry.date }}" title="{{ clEntry.date | date: '%B %d, %Y' }}">
+                    {{ clEntry.date | date: '%B %d, %Y' }}
+                </a>
+            </h2>
             <ul>
                 {% if clEntry.added.size > 0 %}
                     <li>Added</li>

@@ -2,16 +2,22 @@
 
 <body style="background:transparent;overflow:hidden">
 <div id="donatebutton.cash" class="h-100">
-    <button id="button" class="btn btn-primary btn-block" onclick="listen();$(this).slideUp();buttonQr.slideDown();" style="white-space:nowrap">
-        <img src="/assets/images/BCH_inverted.svg" class="img-fluid mr-1" alt="Donate Bitcoin Cash" style="height: 23px">
+    <button id="button" class="btn btn-primary btn-block" onclick="listen();$(this).slideUp();buttonQrCard.slideDown()" style="white-space:nowrap">
+        <img src="/assets/images/BCH_inverted.svg" class="img-fluid mr-1" alt="Donate Bitcoin Cash" style="height:23px">
         <span id="button_label">Donate</span>
     </button>
-    <div class="h-100 justify-content-center align-items-center">
-        <a href="javascript:" onclick="alert('Address: ' + addr)">
-            <div id="button_qr" class="h-100" style="position: relative;background-repeat: no-repeat;background-size: cover">
-                <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
-                    <span id="button_qr_thank_you" class="badge badge-success">Payment received.<br>Thank you!</span>
-                </span>
+    <div id="button_qr_card" class="card h-100">
+        <div class="card-body p-1 text-center justify-content-center align-items-center d-flex">
+            <a id="payment_uri" class="w-100" href="//">
+                <img id="button_qr" class="img-fluid" src="//" style="height:112px;width:100%">
+            </a>
+            <div id="button_qr_thank_you" class="text-success small font-weight-bold align-self-center">
+                <span id="button_qr_received_amount">Payment</span> received. Thank you!
+            </div>
+        </div>
+        <a href="javascript:" onclick="navigator.clipboard.writeText(addr);buttonQrFooterText.html('Copied to clipboard');">
+            <div class="card-footer p-1 text-center small">
+                <span id="button_qr_footer_text">Copy BCH address</span>
             </div>
         </a>
     </div>
@@ -25,36 +31,54 @@
     // params
     let addr = new URLSearchParams(window.location.search).get('a');
     let btnLabel = new URLSearchParams(window.location.search).get('l');
+    let paymentUri = "bitcoincash:" + addr;
 
     // elements
     let button = $('#button');
     let buttonLabel = $('#button_label');
     let buttonQr = $('#button_qr');
-    let buttonQrImage = $('#button_qr_image');
     let buttonQrThankYou = $('#button_qr_thank_you');
+    let buttonQrCard = $('#button_qr_card');
+    let buttonQrReceivedAmount = $('#button_qr_received_amount');
+    let buttonQrFooterText = $('#button_qr_footer_text');
+    let buttonQrPaymentUri = $('#payment_uri');
 
     // dom manipulation
+    buttonQrCard.hide();
+    buttonQrPaymentUri.attr('href', paymentUri);
     buttonQrThankYou.hide();
-    buttonQr
-        .hide()
-        .css({"background-image": 'url(https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + addr + ')'});
+    buttonQr.attr({"src": 'https://api.qrserver.com/v1/create-qr-code/?size=112x112&data=' + paymentUri});
     if (btnLabel) {
         buttonLabel.html(btnLabel);
     }
 
     // listen to incoming transactions
     function listen() {
-        let query = {v:3,q:{find:{"out.e.a":addr}}};
-        let sse = new EventSource("https://bitsocket.bitcoin.com/s/" + btoa(JSON.stringify(query)));
+        let sse = new EventSource("https://bitsocket.bitcoin.com/s/" + btoa(JSON.stringify({v:3,q:{find:{"out.e.a":addr}}})));
         sse.onmessage = (event) => {
             let data = JSON.parse(event.data);
             if (data.type === "mempool") {
-                // tx received
+                // calculate received amount
+                let received = 0;
+                for (let i = 0; i < data.data.length; i++) {
+                    for (let j = 0; j < data.data[i].out.length; j++) {
+                        if (data.data[i].out[j].e.a === addr) {
+                            received = received + data.data[i].out[j].e.v;
+                        }
+                    }
+                }
+                received = (received / 100000000).toFixed(8);
+                buttonQrReceivedAmount.html(received + ' BCH');
+                // some visual feedback on payment
+                buttonQrCard.addClass('border-success');
+                buttonQrPaymentUri.hide();
                 buttonQrThankYou.show();
                 setTimeout(() => {
-                    // show thank you text for 10 secs
+                    // show thank you text for 7.5 secs
+                    buttonQrCard.removeClass('border-success');
                     buttonQrThankYou.hide();
-                }, 10000);
+                    buttonQrPaymentUri.show();
+                }, 7500);
             }
         }
     }
