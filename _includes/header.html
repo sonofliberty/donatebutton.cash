@@ -4,20 +4,17 @@
             <img class="img-fluid mr-1" src="{{ "/assets/images/BCH.svg" | relative_url }}" alt="{{ site.title | escape }}">
             {{ site.title | escape }}
         </a>
-        {%- assign page_paths = site.header_pages -%}
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                {%- for path in page_paths -%}
-                    {%- assign my_page = site.pages | where: "path", path | first -%}
-                    {%- if my_page.title -%}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
-                        </li>
-                    {%- endif -%}
+                {%- for path in site.data.navigation -%}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path.url | relative_url }}" title="{{ path.title | escape }}">
+                            {{ path.title | escape }}
+                        </a>
+                    </li>
                 {% endfor -%}
             </ul>
         </div>

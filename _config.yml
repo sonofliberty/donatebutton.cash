@@ -1,7 +1,7 @@
 title: donatebutton.cash
 email: hi@alexwinter.me
 description: >-
-  Easily accept online donations via Bitcoin Cash, the peer-to-peer electronic cash system.
+  Easily accept online donations via Bitcoin Cash BCH, the peer-to-peer electronic cash system.
 #baseurl: "" # the subpath of your site, e.g. /blog
 #url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -26,10 +26,11 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
 
-# A list of the pages to display in the navigation bar
-header_pages:
-
 # Exclude from processing.
 exclude:
   - .idea
   - vendor
+
+# Button config
+button:
+  label_max_length: 10

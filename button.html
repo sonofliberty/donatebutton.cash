@@ -15,11 +15,11 @@ title: Your button
     </h2>
     <div class="row">
         <div class="col-lg-3 mb-4">
-            <div id="frame" style="height: 150px; width: 150px">Loading</div>
+            <div id="frame" style="height: 150px; width: 150px"></div>
         </div>
         <div class="col-lg-7">
             <label for="textarea">Include the following line in your HTML:</label>
-            <textarea id="textarea" rows="4" class="form-control"></textarea>
+            <textarea id="textarea" rows="4" class="form-control" readonly></textarea>
         </div>
     </div>
 </section>
@@ -38,6 +38,7 @@ title: Your button
 
     if (params.has('address')) {
         let address = params.get('address');
+
         if (bchaddr.isValidAddress(address)) {
             // address is a valid bitcoin cash address
             alertInvalidAddressShow = false;
@@ -45,13 +46,17 @@ title: Your button
             $('._address').html(address);
             address = address.replace('bitcoincash:', '');
             let port = location.port;
-            if (port > 0 && port !== 80 && port !== 443) {
+            if (port > 0 && port !== 80 && port !== 443)
                 port = ':' + port;
-            } else {
+             else
                 port = '';
+
+            let iframeHtmlParams = "?a=" + address;
+            if (params.has('label')) {
+                iframeHtmlParams = iframeHtmlParams.concat(("&l=" + params.get('label')));
             }
 
-            let iframeHtml = "<iframe src='" + window.location.protocol + "//" + window.location.hostname + port + "/e?a=" + address + "' width='150' height='150' style='border:none;overflow:hidden'></iframe>";
+            let iframeHtml = "<iframe src='" + window.location.protocol + "//" + window.location.hostname + port + "/e" + iframeHtmlParams + "' width='150' height='150' style='border:none;overflow:hidden'></iframe>";
             textarea.val(iframeHtml);
             frame.html(iframeHtml);
         }

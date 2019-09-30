@@ -1,0 +1,38 @@
+---
+layout: page
+title: Changelog
+---
+
+<ul class="list-unstyled">
+    {% for clEntry in site.data.changelog %}
+        <li>
+            <h2>{{ clEntry.date | date: '%B %d, %Y' }}</h2>
+            <ul>
+                {% if clEntry.added.size > 0 %}
+                    <li>Added</li>
+                    <ul class="small">
+                        {% for item in clEntry.added %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if clEntry.changed.size > 0 %}
+                    <li>Changed</li>
+                    <ul class="small">
+                        {% for item in clEntry.changed %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if clEntry.fixed.size > 0 %}
+                    <li>Fixed</li>
+                    <ul class="small">
+                        {% for item in clEntry.fixed %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </ul>
+        </li>
+    {% endfor %}
+</ul>

@@ -1,13 +1,23 @@
 <form method="get" action="/button">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-7">
             <div class="form-group">
-                <input id="button_name" class="form-control form-control-lg" type="text" name="address" placeholder="Your BCH address" autocomplete="off" autofocus required>
+                <label for="button_address">Cash address</label>
+                <input id="button_address" class="form-control form-control-lg" type="text" name="address" placeholder="Your BCH address" autocomplete="off" autofocus required>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-lg btn-block">Generate</button>
+                <label for="button_label">Label</label>
+                <input id="button_label" class="form-control form-control-lg" type="text" name="label" placeholder="Button label (optional)" autocomplete="off" maxlength="{{ site.button.label_max_length }}">
+                <small class="form-text text-muted">{{ site.button.label_max_length }} characters max</small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-right">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg">Generate &rightarrow;</button>
             </div>
         </div>
     </div>

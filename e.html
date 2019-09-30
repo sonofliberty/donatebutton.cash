@@ -2,9 +2,9 @@
 
 <body style="background:transparent;overflow:hidden">
 <div id="donatebutton.cash" class="h-100">
-    <button id="button" class="btn btn-primary btn-block" onclick="startListening(); $(this).slideUp(); buttonQr.slideDown();">
-        <img src="/assets/images/BCH_inverted.svg" class="img-fluid mr-1" alt="Donate Bitcoin Cash" >
-        <strong>Donate</strong>
+    <button id="button" class="btn btn-primary btn-block" onclick="listen();$(this).slideUp();buttonQr.slideDown();" style="white-space:nowrap">
+        <img src="/assets/images/BCH_inverted.svg" class="img-fluid mr-1" alt="Donate Bitcoin Cash" style="height: 23px">
+        <span id="button_label">Donate</span>
     </button>
     <div class="h-100 justify-content-center align-items-center">
         <a href="javascript:" onclick="alert('Address: ' + addr)">
@@ -28,9 +28,10 @@
 
     // elements
     let button = $('#button');
+    let buttonLabel = $('#button_label');
     let buttonQr = $('#button_qr');
-    let buttonQrImage = buttonQr.find('#button_qr_image');
-    let buttonQrThankYou = buttonQr.find('#button_qr_thank_you');
+    let buttonQrImage = $('#button_qr_image');
+    let buttonQrThankYou = $('#button_qr_thank_you');
 
     // dom manipulation
     buttonQrThankYou.hide();
@@ -38,11 +39,11 @@
         .hide()
         .css({"background-image": 'url(https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + addr + ')'});
     if (btnLabel) {
-        button.html(btnLabel);
+        buttonLabel.html(btnLabel);
     }
 
     // listen to incoming transactions
-    function startListening() {
+    function listen() {
         let query = {v:3,q:{find:{"out.e.a":addr}}};
         let sse = new EventSource("https://bitsocket.bitcoin.com/s/" + btoa(JSON.stringify(query)));
         sse.onmessage = (event) => {

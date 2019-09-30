@@ -1,0 +1,7 @@
+- date: 2019-09-30
+  added:
+    - Custom labels for donation button
+    - Changelog
+  fixed:
+    - Fixed issue with scroll bar being visible in some circumstances
+    - Button element dimensions

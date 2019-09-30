@@ -1,16 +1,14 @@
 ---
 layout: default
 ---
-<article>
 
+<article>
   {% if page.title %}
     <header>
       <h1>{{ page.title | escape }}</h1>
     </header>
   {% endif %}
-
-  <section>
+  <section class="my-5">
     {{ content }}
   </section>
-
 </article>
