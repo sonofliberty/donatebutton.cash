@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/assets/main.css">
 
 <body style="background: transparent">
-<div id="donatebutton.cash" class="h-100" style="position: relative">
+<div id="donatebutton.cash" class="h-100">
     <button id="button" class="btn btn-primary btn-block" onclick="startListening(); $(this).slideUp(); buttonQr.slideDown();">
         <img src="/assets/images/BCH_inverted.svg" class="img-fluid mr-1" alt="Donate Bitcoin Cash" >
         <strong>Donate</strong>
@@ -10,9 +10,7 @@
         <a href="javascript:" onclick="alert('Address: ' + addr)">
             <div id="button_qr" class="h-100" style="position: relative;background-repeat: no-repeat;background-size: cover">
                 <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);">
-                    <span>
-                        <span id="button_qr_thank_you" class="badge badge-success">Payment received.<br>Thank you!</span>
-                    </span>
+                    <span id="button_qr_thank_you" class="badge badge-success">Payment received.<br>Thank you!</span>
                 </span>
             </div>
         </a>
@@ -29,14 +27,12 @@
     let btnLabel = new URLSearchParams(window.location.search).get('l');
 
     // elements
-    let paymentAddress = $('#payment_address');
     let button = $('#button');
     let buttonQr = $('#button_qr');
     let buttonQrImage = buttonQr.find('#button_qr_image');
     let buttonQrThankYou = buttonQr.find('#button_qr_thank_you');
 
     // dom manipulation
-    paymentAddress.hide().html(addr);
     buttonQrThankYou.hide();
     buttonQr
         .hide()
