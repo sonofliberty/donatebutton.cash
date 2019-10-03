@@ -1,5 +1,6 @@
 MIT License
 
+Copyright (c) 2018 Nicolas Vanhoren
 Copyright (c) 2019 Alex Winter
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
