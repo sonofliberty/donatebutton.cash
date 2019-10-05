@@ -1,3 +1,7 @@
+- date: 2019-10-05
+  changed:
+    - Use jQuery.qrcode library instead of external API
+    - QR code color changed to cash green
 - date: 2019-10-01
   added:
     - Button to copy BCH address to clipboard

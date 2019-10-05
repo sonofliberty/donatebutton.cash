@@ -9,7 +9,7 @@
     <div id="button_qr_card" class="card h-100" style="display:none">
         <div class="card-body p-1 text-center justify-content-center align-items-center d-flex">
             <a id="payment_uri" class="w-100" href="//">
-                <img id="button_qr" class="img-fluid" src="//" style="height:112px;width:100%">
+                <div id="button_qr" class="img-fluid" style="height:112px;width:100%"></div>
             </a>
             <div id="button_qr_thank_you" class="text-success small font-weight-bold align-self-center" style="display:none">
                 <span id="button_qr_received_amount">Payment</span> received. Thank you!
@@ -26,6 +26,7 @@
 
 <script src="/assets/javascript/bootstrap/jquery.min.js"></script>
 <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="/assets/javascript/jquery-qrcode.min.js"></script>
 <script>
 
     // params
@@ -44,8 +45,8 @@
     let buttonQrPaymentUri = $('#payment_uri');
 
     // dom manipulation
-    buttonQrPaymentUri.attr('href', paymentUri);
-    buttonQr.attr({"src": 'https://api.qrserver.com/v1/create-qr-code/?size=112x112&data=' + paymentUri});
+    buttonQrPaymentUri.attr('href',paymentUri);
+    buttonQr.qrcode({text:paymentUri,render:'image',size:140,fill:'#5DCB79'}).find('img').css({height:112,width:'100%'});
     if (btnLabel) {
         buttonLabel.html(btnLabel);
     }
@@ -61,6 +62,7 @@
                 for (let i = 0; i < data.data.length; i++) {
                     for (let j = 0; j < data.data[i].out.length; j++) {
                         if (data.data[i].out[j].e.a === addr) {
+                            // output address is recipient's address
                             received = received + data.data[i].out[j].e.v;
                         }
                     }
