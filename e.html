@@ -1,28 +1,33 @@
-<link rel="stylesheet" href="/assets/main.css">
-
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="/assets/main.css">
+</head>
 <body style="background:transparent;overflow:hidden">
 <div id="donatebutton.cash" class="h-100">
     <button id="button" class="btn btn-primary btn-block" onclick="listen();$(this).slideUp();buttonQrCard.slideDown()" style="white-space:nowrap">
         <img src="/assets/images/BCH_inverted.svg" class="img-fluid mr-1" alt="Donate Bitcoin Cash" style="height:23px">
         <span id="button_label">Donate</span>
     </button>
-    <div id="button_qr_card" class="card h-100" style="display:none">
-        <div class="card-body p-1 text-center justify-content-center align-items-center d-flex">
+    <div id="button_qr_card" class="card border-primary h-100" style="display:none;overflow:hidden">
+        <div class="card-body p-0 text-center justify-content-center align-items-center d-flex" style="height:112px">
             <a id="payment_uri" class="w-100" href="//">
-                <div id="button_qr" class="img-fluid" style="height:112px;width:100%"></div>
+                <div id="button_qr" class="img-fluid w-100"></div>
             </a>
-            <div id="button_qr_thank_you" class="text-success small font-weight-bold align-self-center" style="display:none">
+            <div id="button_qr_thank_you" class="text-success small px-2 font-weight-bold align-self-center" style="display:none">
                 <span id="button_qr_received_amount">Payment</span> received. Thank you!
             </div>
         </div>
         <a href="javascript:" onclick="navigator.clipboard.writeText(addr);buttonQrFooterText.html('Copied ┗(°0°)┛');">
-            <div class="card-footer p-1 text-center small">
+            <div class="card-footer p-1 bg-primary text-white text-center small">
                 <span id="button_qr_footer_text">Copy BCH address</span>
             </div>
         </a>
     </div>
 </div>
 </body>
+</html>
 
 <script src="/assets/javascript/bootstrap/jquery.min.js"></script>
 <script src="/assets/javascript/bootstrap/bootstrap.bundle.min.js"></script>
@@ -46,7 +51,12 @@
 
     // dom manipulation
     buttonQrPaymentUri.attr('href',paymentUri);
-    buttonQr.qrcode({text:paymentUri,render:'image',size:140,fill:'#5DCB79'}).find('img').css({height:112,width:'100%'});
+    buttonQr.qrcode({
+        text: paymentUri,
+        render: 'image',
+        size: 140,
+        fill: '#5DCB79'
+    }).find('img').css({height:112,width:'100%'});
     if (btnLabel) {
         buttonLabel.html(btnLabel);
     }
@@ -70,12 +80,10 @@
                 received = (received / 100000000).toFixed(8);
                 buttonQrReceivedAmount.html(received + ' BCH');
                 // some visual feedback on payment
-                buttonQrCard.addClass('border-success');
                 buttonQrPaymentUri.hide();
                 buttonQrThankYou.show();
                 setTimeout(() => {
                     // show thank you text for 7.5 secs
-                    buttonQrCard.removeClass('border-success');
                     buttonQrThankYou.hide();
                     buttonQrPaymentUri.show();
                 }, 7500);

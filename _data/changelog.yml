@@ -1,3 +1,8 @@
+- date: 2019-10-06
+  added:
+    - Added meta tag to prevent search engines from indexing individual buttons
+  changed:
+    - Minor frontend improvements
 - date: 2019-10-05
   changed:
     - Use jQuery.qrcode library instead of external API
